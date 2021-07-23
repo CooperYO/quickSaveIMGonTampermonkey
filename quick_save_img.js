@@ -41,36 +41,52 @@
         img.setAttribute('crossOrigin', 'Anonymous')
     }
 
+    var keyflag = false;
+    var src = null;
+
     document.body.addEventListener('keydown',
     event => {
-        if ( event.metaKey || event.altLeft) {
-            var src = null;
+        if ( event.metaKey || event.key == "s") {
+
+            keyflag = true;
+            //alert(keyflag);
            //alert("Ctrl+Vが押されました");
-           document.addEventListener('click', function ( e ) {
-                //alert(e.target.src);
-               src = e.target.src;
-               if(src != null){
-
-                   //downloadImgByBlob(src);
-
-                //以下方法可以下载包含gif格式的图片
-                   var x=new XMLHttpRequest();
-                    x.open("GET", src, true);
-                    x.responseType = 'blob';
-                    x.onload=function(k){
-                        var url = window.URL.createObjectURL(x.response)
-                        var a = document.createElement('a');
-                        a.href = url
-                        a.download = ''
-                        a.click()
-                    }
-
-                    x.send();
-                }
-            });
-
         }
 
     });
+    document.body.addEventListener('keyup',
+    event => {
+        if ( event.metaKey || event.key == "s") {
+
+            keyflag = false;
+
+           //alert("Ctrl+Vが押されました");
+        }
+
+    });
+
+   document.addEventListener('click', function ( e ) {
+    //alert(e.target.src);
+
+   src = e.target.src;
+   if(src != null && keyflag){
+
+       //downloadImgByBlob(src);
+
+    //以下方法可以下载包含gif格式的图片
+       var x=new XMLHttpRequest();
+        x.open("GET", src, true);
+        x.responseType = 'blob';
+        x.onload=function(k){
+            var url = window.URL.createObjectURL(x.response)
+            var a = document.createElement('a');
+            a.href = url
+            a.download = ''
+            a.click()
+        }
+
+        x.send();
+    }
+});
 
 })();
